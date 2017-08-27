@@ -1,0 +1,20 @@
+Vagrant.configure '2' do |config|
+  config.vm.box = 'alvin-yim/hobo'
+  config.vm.provider 'virtualbox' do |v|
+    v.memory = 8192
+  end
+  config.vm.provision 'file',
+    source: '~/.ssh/id_rsa',
+    destination: '.ssh/id_rsa'
+  config.vm.provision 'file',
+    source: '~/.ssh/id_rsa.pub',
+    destination: '.ssh/id_rsa.pub'
+  config.vm.provision 'shell',
+    inline: '/home/ubuntu/install/box/prepare',
+    privileged: false,
+    env: {
+      'UBUNTU_APT_MIRROR' => 'http://archive.ubuntu.com/ubuntu',
+      'GIT_USER_EMAIL' => 'user@example.com',
+      'GIT_USER_NAME' => 'First Name'
+    }
+end

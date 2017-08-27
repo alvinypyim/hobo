@@ -1,0 +1,119 @@
+#!/usr/bin/env bash
+set -e
+set -x
+
+cd "$(dirname "$0")/.."
+
+[ -n "$VAGRANT_PROVIDER" ] || VAGRANT_PROVIDER=virtualbox
+[ -n "$VAGRANT_NAME" ] || VAGRANT_NAME="$SEMAPHORE_PROJECT_NAME"
+
+main() {
+  has_git_tag || return 0
+  ! vagrant_has_version || return 0
+  install_virtualbox
+  install_vagrant
+  install_vagrant_plugins
+  build_box
+  push_box
+}
+
+has_git_tag() {
+  [ -n "$(git_tag)" ]
+}
+
+
+git_tag() {
+  git tag --points-at HEAD | head -n1
+}
+
+install_virtualbox() {
+  sudo bash -c 'echo deb http://download.virtualbox.org/virtualbox/debian trusty contrib >> /etc/apt/sources.list'
+  curl https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo apt-key add -
+  curl https://www.virtualbox.org/download/oracle_vbox.asc | sudo apt-key add -
+  sudo apt-get update
+  sudo apt-get -y install virtualbox-5.2
+}
+
+install_vagrant() {
+  local vagrant_deb
+
+  vagrant_deb="$(mktemp)"
+  curl -L "-o$vagrant_deb" https://releases.hashicorp.com/vagrant/2.0.1/vagrant_2.0.1_x86_64.deb
+  sudo dpkg -i "$vagrant_deb"
+  rm -v "$vagrant_deb"
+  sudo apt-get -y -f install
+}
+
+install_vagrant_plugins() {
+  vagrant plugin install vagrant-docker-compose
+  vagrant plugin install vagrant-disksize
+}
+
+build_box() {
+  vagrant up
+  vagrant halt
+  vagrant package --base "$(vm_name)" --vagrantfile src/Vagrantfile
+}
+
+vm_name() {
+  vboxmanage list vms | sed 's/ .*//g' | sed 's/"//g'
+}
+
+push_box() {
+  vagrant_create_version
+  vagrant_create_provider
+  vagrant_upload_box
+  vagrant_release_version
+}
+
+vagrant_upload_box() {
+  curl -vs -XPUT --upload-file package.box "$(vagrant_upload_url)" || echo Exit code: "$?"
+}
+
+vagrant_upload_url() {
+  vagrant_upload_info | jq -r '.upload_path'
+}
+
+vagrant_upload_info() {
+  vagrant_curl "$(vagrant_api_endpoint)/version/$(git_tag)/provider/$VAGRANT_PROVIDER/upload"
+}
+
+vagrant_has_version() {
+  [ -n "$(vagrant_versions | jq --arg tag "$(git_tag)" '.versions[] | select(.version == $tag)')" ]
+}
+
+vagrant_versions() {
+  vagrant_curl "$(vagrant_api_endpoint)"
+}
+
+vagrant_create_version() {
+  vagrant_curl \
+    '-HContent-Type: application/json' \
+    "-d$(vagrant_version)" \
+    "$(vagrant_api_endpoint)/versions"
+}
+
+vagrant_release_version() {
+  vagrant_curl -XPUT "$(vagrant_api_endpoint)/version/$(git_tag)/release"
+}
+
+vagrant_create_provider() {
+  vagrant_curl \
+    '-HContent-Type: application/json' \
+    '-d{"provider":{"name":"virtualbox"}}' \
+    "$(vagrant_api_endpoint)/version/$(git_tag)/providers"
+}
+
+vagrant_version() {
+  echo 1 | jq --arg tag "$(git_tag)" '{"version":{"version":$tag}}'
+}
+
+vagrant_api_endpoint() {
+  echo "https://app.vagrantup.com/api/v1/box/$VAGRANT_USERNAME/$VAGRANT_NAME"
+}
+
+vagrant_curl() {
+  curl "-HAuthorization: Bearer $VAGRANT_CLOUD_TOKEN" "$@"
+}
+
+main
