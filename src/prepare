@@ -5,6 +5,7 @@ main() {
   copy_src_files
   configure_git
   install_apt_packages
+  install_docker_compose
   install_rbenv
   install_pyenv
   install_global_python
@@ -38,6 +39,11 @@ install_apt_packages() {
 clean_apt() {
   sudo apt-get clean
   sudo rm -Rf /var/lib/apt/lists/*
+}
+
+install_docker_compose() {
+  sudo curl -L https://github.com/docker/compose/releases/download/1.17.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+  sudo chmod +x /usr/local/bin/docker-compose
 }
 
 install_rbenv() {

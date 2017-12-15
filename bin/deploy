@@ -45,7 +45,6 @@ install_vagrant() {
 }
 
 install_vagrant_plugins() {
-  vagrant plugin install vagrant-docker-compose
   vagrant plugin install vagrant-disksize
 }
 

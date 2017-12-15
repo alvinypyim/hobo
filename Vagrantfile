@@ -4,7 +4,6 @@ Vagrant.configure '2' do |config|
   end
   config.disksize.size = '100GB'
   config.vm.provision :docker
-  config.vm.provision :docker_compose
   config.vm.box = 'ubuntu/xenial64'
   config.vm.provision(
     'shell',
