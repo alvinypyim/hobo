@@ -33,7 +33,8 @@ install_apt_packages() {
   sudo apt-get -y install \
     jq \
     alpine \
-    bc
+    bc \
+    openjdk-8-jdk
 }
 
 clean_apt() {
