@@ -15,6 +15,7 @@ Vagrant.configure '2' do |config|
     env: {
       'UBUNTU_APT_MIRROR' => 'http://archive.ubuntu.com/ubuntu',
       'GIT_USER_EMAIL' => 'user@example.com',
-      'GIT_USER_NAME' => 'First Name'
+      'GIT_USER_NAME' => 'First Name',
+      'DESIRED_TIMEZONE' => 'Australia/Adelaide'
     }
 end
