@@ -8,6 +8,7 @@ main() {
   install_docker_compose
   install_rbenv
   install_pyenv
+  install_nvm
   install_global_python
   install_awscli
   clean_apt
@@ -76,6 +77,10 @@ install_pyenv() {
   echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
   echo '! command -v pyenv &> /dev/null || eval "$(pyenv init -)"' >> ~/.profile
   . ~/.profile
+}
+
+install_nvm() {
+  curl https://raw.githubusercontent.com/creationix/nvm/v0.33.4/install.sh | bash
 }
 
 install_global_python() {
