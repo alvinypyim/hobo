@@ -8,6 +8,9 @@ Vagrant.configure '2' do |config|
   config.vm.provision(
     'shell',
     path: 'src/prepare',
-    privileged: false
+    privileged: false,
+    env: {
+      'BOX_VERSION' => ENV['BOX_VERSION']
+    }
   )
 end

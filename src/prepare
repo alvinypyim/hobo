@@ -2,6 +2,7 @@
 set -e
 
 main() {
+  mark_version
   copy_src_files
   configure_git
   install_apt_packages
@@ -13,6 +14,10 @@ main() {
   install_awscli
   clean_apt
   setup_vagrant
+}
+
+mark_version() {
+  [ -z "$BOX_VERSION" ] || echo "$BOX_VERSION" > ~/box-version
 }
 
 copy_src_files() {
