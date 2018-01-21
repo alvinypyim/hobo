@@ -51,7 +51,7 @@ install_vagrant_plugins() {
 build_box() {
   BOX_VERSION="$(git_tag)" vagrant up
   vagrant halt
-  vagrant package --base "$(vm_name)" --vagrantfile src/Vagrantfile
+  vagrant package --base "$(vm_name)"
 }
 
 vm_name() {
