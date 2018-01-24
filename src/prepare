@@ -13,7 +13,6 @@ main() {
   install_global_python
   install_awscli
   clean_apt
-  setup_vagrant
 }
 
 mark_version() {
@@ -97,10 +96,6 @@ install_awscli() {
   pip install awscli
   pip install awsebcli
   echo 'export EDITOR="$(which vim)"' >> ~/.profile
-}
-
-setup_vagrant() {
-  curl -s https://raw.githubusercontent.com/hashicorp/vagrant/v2.0.1/keys/vagrant.pub > ~/.ssh/authorized_keys
 }
 
 main

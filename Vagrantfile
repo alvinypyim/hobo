@@ -13,4 +13,5 @@ Vagrant.configure '2' do |config|
       'BOX_VERSION' => ENV['BOX_VERSION']
     }
   )
+  config.ssh.insert_key = false
 end
