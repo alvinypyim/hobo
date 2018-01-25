@@ -12,6 +12,7 @@ main() {
   install_nvm
   install_global_python
   install_awscli
+  install_phpbrew
   clean_apt
 }
 
@@ -94,8 +95,50 @@ install_global_python() {
 
 install_awscli() {
   pip install awscli
-  pip install awsebcli
+  pip install virtualenv
+  mkdir -v eb
+  pushd eb
+  virtualenv vendor/virtualenv
+  vendor/virtualenv/bin/pip install awsebcli
+  echo 'exec "$(dirname "$0")"/vendor/virtualenv/bin/eb "$@"' > call
+  chmod -v +x call
+  popd
   echo 'export EDITOR="$(which vim)"' >> ~/.profile
+}
+
+install_phpbrew() {
+  local phpbrew_executable
+
+  phpbrew_executable="$(mktemp)"
+  curl -L "-o$phpbrew_executable" https://github.com/phpbrew/phpbrew/raw/master/phpbrew
+  chmod -v +x "$phpbrew_executable"
+  sudo mv -v "$phpbrew_executable" /usr/local/bin/phpbrew
+
+  sudo apt-get -y install \
+    php7.0 \
+    php7.0-curl \
+    php7.0-json \
+    php7.0-cgi \
+    php7.0-fpm \
+    autoconf \
+    automake \
+    libxml2-dev \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    openssl \
+    gettext \
+    libicu-dev \
+    libmcrypt-dev \
+    libmcrypt4 \
+    libbz2-dev \
+    libreadline-dev \
+    build-essential \
+    libmhash-dev \
+    libmhash2 \
+    libxslt1-dev
+
+  phpbrew init
+  echo '[ ! -e ~/.phpbrew/bashrc ] || . ~/.phpbrew/bashrc' >> ~/.bashrc
 }
 
 main

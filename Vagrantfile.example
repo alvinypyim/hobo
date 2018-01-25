@@ -10,7 +10,7 @@ Vagrant.configure '2' do |config|
     source: '~/.ssh/id_rsa.pub',
     destination: '.ssh/id_rsa.pub'
   config.vm.provision 'shell',
-    inline: '/home/ubuntu/install/box/prepare',
+    inline: '/home/vagrant/install/box/prepare',
     privileged: false,
     env: {
       'UBUNTU_APT_MIRROR' => 'http://archive.ubuntu.com/ubuntu',
