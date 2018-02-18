@@ -18,4 +18,5 @@ Vagrant.configure '2' do |config|
       'GIT_USER_NAME' => 'First Name',
       'DESIRED_TIMEZONE' => 'Australia/Adelaide'
     }
+  config.vm.network 'private_network', type: 'dhcp'
 end
