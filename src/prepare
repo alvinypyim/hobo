@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+set -x
 
 main() {
   mark_version
@@ -10,9 +11,12 @@ main() {
   install_rbenv
   install_pyenv
   install_nvm
+  install_phpbrew
+  install_composer
+  install_stackup
   install_global_python
   install_awscli
-  install_phpbrew
+  install_ebcli
   clean_apt
 }
 
@@ -24,7 +28,7 @@ copy_src_files() {
   pushd /vagrant/src
   cp -v vimrc ~/.vimrc
   cp -v inputrc ~/.inputrc
-  cp -vR install ~
+  cp -vR install stackup ~
   popd
 }
 
@@ -41,7 +45,9 @@ install_apt_packages() {
     jq \
     alpine \
     bc \
-    openjdk-8-jdk
+    openjdk-8-jdk \
+    nfs-common \
+    unzip
 }
 
 clean_apt() {
@@ -50,7 +56,7 @@ clean_apt() {
 }
 
 install_docker_compose() {
-  sudo curl -L https://github.com/docker/compose/releases/download/1.17.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+  sudo curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
   sudo chmod +x /usr/local/bin/docker-compose
 }
 
@@ -74,6 +80,9 @@ install_rbenv() {
   mkdir -vp ~/.rbenv/plugins
   git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
   popd
+  set +e
+  . ~/.profile
+  set -e
 }
 
 install_pyenv() {
@@ -81,7 +90,9 @@ install_pyenv() {
   echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.profile
   echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
   echo '! command -v pyenv &> /dev/null || eval "$(pyenv init -)"' >> ~/.profile
+  set +e
   . ~/.profile
+  set -e
 }
 
 install_nvm() {
@@ -91,11 +102,14 @@ install_nvm() {
 install_global_python() {
   pyenv install 2.7.14
   pyenv global 2.7.14
+  pip install virtualenv
 }
 
 install_awscli() {
   pip install awscli
-  pip install virtualenv
+}
+
+install_ebcli() {
   mkdir -v eb
   pushd eb
   virtualenv vendor/virtualenv
@@ -135,10 +149,33 @@ install_phpbrew() {
     build-essential \
     libmhash-dev \
     libmhash2 \
-    libxslt1-dev
+    libxslt1-dev \
+    libmagickwand-dev \
+    libmagickcore-dev \
+    libmysqlclient-dev \
+    libmysqld-dev
 
   phpbrew init
   echo '[ ! -e ~/.phpbrew/bashrc ] || . ~/.phpbrew/bashrc' >> ~/.bashrc
+}
+
+install_composer() {
+  local temp_path
+
+  temp_path="$(mktemp -d)"
+  pushd "$temp_path"
+  /vagrant/vendor/download-composer
+  sudo mv -v composer.phar /usr/local/bin/composer
+  popd
+  rm -vRf "$temp_path"
+}
+
+install_stackup() {
+  rbenv install "$(cat ~/stackup/.ruby-version)"
+  gem install bundler -N
+  pushd ~/stackup
+  bundle --path vendor/bundle
+  popd
 }
 
 main
