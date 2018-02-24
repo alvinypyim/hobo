@@ -9,6 +9,7 @@ cd "$(dirname "$0")/.."
 main() {
   has_git_tag || return 0
   ! vagrant_has_version || return 0
+  free_up_space
   install_virtualbox
   install_vagrant
   install_vagrant_plugins
@@ -23,6 +24,10 @@ has_git_tag() {
 
 git_tag() {
   git tag --points-at HEAD | head -n1
+}
+
+free_up_space() {
+  sudo rm -Rf /home/runner/{.phpbrew,.phpunit,.kerl,.kiex,.lein}
 }
 
 install_virtualbox() {
