@@ -16,6 +16,7 @@ main() {
   install_global_python
   install_awscli
   install_ebcli
+  install_samba
   clean_apt
 }
 
@@ -172,6 +173,13 @@ install_stackup() {
   gem install bundler -N
   bundle --path vendor/bundle
   popd
+}
+
+install_samba() {
+  sudo apt-get -y install samba
+  sudo bash -c 'cat /vagrant/src/smb-section.conf >> /etc/samba/smb.conf'
+  smbpasswd -a
+  { echo vagrant && echo vagrant; } | sudo smbpasswd -a -s vagrant
 }
 
 main
