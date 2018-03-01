@@ -178,7 +178,6 @@ install_stackup() {
 install_samba() {
   sudo apt-get -y install samba
   sudo bash -c 'cat /vagrant/src/smb-section.conf >> /etc/samba/smb.conf'
-  smbpasswd -a
   { echo vagrant && echo vagrant; } | sudo smbpasswd -a -s vagrant
 }
 
