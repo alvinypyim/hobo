@@ -153,6 +153,7 @@ install_phpbrew() {
 
   phpbrew init
   echo '[ ! -e ~/.phpbrew/bashrc ] || . ~/.phpbrew/bashrc' >> ~/.bashrc
+  echo 'export PHPBREW_RC_ENABLE=1' >> ~/.bashrc
 }
 
 install_composer() {
