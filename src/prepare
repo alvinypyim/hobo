@@ -10,6 +10,7 @@ main() {
   install_rbenv
   install_pyenv
   install_nvm
+  install_yarn
   install_phpbrew
   install_composer
   install_stackup
@@ -93,6 +94,13 @@ install_pyenv() {
 
 install_nvm() {
   curl https://raw.githubusercontent.com/creationix/nvm/v0.33.4/install.sh | bash
+}
+
+install_yarn() {
+  curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+  echo deb https://dl.yarnpkg.com/debian/ stable main | sudo tee /etc/apt/sources.list.d/yarn.list
+  sudo apt-get update
+  sudo apt-get -y install yarn
 }
 
 install_global_python() {
