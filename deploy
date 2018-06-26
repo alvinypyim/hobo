@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+set -x
+
+cd "$(dirname "$0")"
+
+git clone \
+  --depth 1 \
+  -bvagrant-cloud \
+  git@bitbucket.org:enginepartner/hobo-config.git \
+  config
+
+exec config/deploy
