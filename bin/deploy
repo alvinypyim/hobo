@@ -14,7 +14,7 @@ main() {
   install_virtualbox
   install_vmware_vdiskmanager
   install_vagrant
-  install_vagrant_plugins
+#  install_vagrant_plugins
   build_box
   push_box
 }
@@ -50,7 +50,7 @@ install_vmware_vdiskmanager() {
   sudo mv -v "$file_name" /usr/bin/vmware-vdiskmanager
   popd
   rm -vRf "$archive_file_path" "$archive_path"
-  sudo apt-get -y install zlib1g:i386 libc6-i386
+  sudo apt-get -y install zlib1g:i386 libc6-i386 libssl0.9.8:i386
 }
 
 install_vagrant() {
