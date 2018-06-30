@@ -3,6 +3,8 @@ set -e
 set -x
 
 main() {
+  dd if=/dev/zero of=wipefile bs=1024x1024 || echo -n
+  rm -v wipefile
   exit
   mark_version
   copy_src_files
