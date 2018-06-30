@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+set -x
 
 cd "$(dirname "$0")/.."
 
@@ -35,7 +36,7 @@ install_virtualbox() {
   curl https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo apt-key add -
   curl https://www.virtualbox.org/download/oracle_vbox.asc | sudo apt-key add -
   sudo apt-get update
-  sudo apt-get -y install virtualbox-5.2
+  sudo apt-get -y install virtualbox-5.2 libguestfs-tools
 }
 
 install_vagrant() {
@@ -55,6 +56,7 @@ install_vagrant_plugins() {
 build_box() {
   BOX_VERSION="$(git_tag)" vagrant up
   vagrant halt
+  exit 1
   vagrant package --base "$(vm_name)"
 }
 
