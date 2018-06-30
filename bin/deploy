@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+set -x
 
 cd "$(dirname "$0")/.."
 
@@ -11,6 +12,7 @@ main() {
   ! vagrant_has_version || return 0
   free_up_space
   install_virtualbox
+  install_vmware_vdiskmanager
   install_vagrant
   install_vagrant_plugins
   build_box
@@ -20,7 +22,6 @@ main() {
 has_git_tag() {
   [ -n "$(git_tag)" ]
 }
-
 
 git_tag() {
   git tag --points-at HEAD | head -n1
@@ -36,6 +37,22 @@ install_virtualbox() {
   curl https://www.virtualbox.org/download/oracle_vbox.asc | sudo apt-key add -
   sudo apt-get update
   sudo apt-get -y install virtualbox-5.2
+}
+
+install_vmware_vdiskmanager() {
+  local archive_path archive_file_path file_name=1023856-vmware-vdiskmanager-linux.7.0.1
+  archive_file_path="$(mktemp)"
+  curl -L "-o$archive_file_path" 'https://kb.vmware.com/servlet/fileField?entityId=ka134000000Rl9lAAC&field=Attachment_2__Body__s'
+  archive_path="$(mktemp -d)"
+  pushd "$archive_path"
+  unzip "$archive_file_path"
+  chmod -v 775 "$file_name"
+  sudo mv -v "$file_name" /usr/bin/vmware-vdiskmanager
+  popd
+  rm -vRf "$archive_file_path" "$archive_path"
+  sudo apt-get -y install zlib1g:i386 libc6-i386
+  vmware-vdiskmanager || echo -n
+  exit
 }
 
 install_vagrant() {
