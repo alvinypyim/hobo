@@ -52,7 +52,6 @@ install_vmware_vdiskmanager() {
   rm -vRf "$archive_file_path" "$archive_path"
   sudo apt-get -y install zlib1g:i386 libc6-i386
   vmware-vdiskmanager || echo -n
-  exit
 }
 
 install_vagrant() {
@@ -72,6 +71,8 @@ install_vagrant_plugins() {
 build_box() {
   BOX_VERSION="$(git_tag)" vagrant up
   vagrant halt
+  vboxmanage list hdds
+  exit
   vagrant package --base "$(vm_name)"
 }
 

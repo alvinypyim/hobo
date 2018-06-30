@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e
+set -x
 
 main() {
+  exit
   mark_version
   copy_src_files
   configure_git
