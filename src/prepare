@@ -3,9 +3,6 @@ set -e
 set -x
 
 main() {
-  dd if=/dev/zero of=wipefile bs=1024x1024 || echo -n
-  rm -v wipefile
-  exit
   mark_version
   copy_src_files
   configure_git
@@ -23,6 +20,7 @@ main() {
   install_ebcli
   install_samba
   clean_apt
+  clean_up_free_space
 }
 
 mark_version() {
@@ -193,6 +191,13 @@ install_samba() {
   sudo apt-get -y install samba
   sudo bash -c 'cat /vagrant/src/smb-section.conf >> /etc/samba/smb.conf'
   { echo vagrant && echo vagrant; } | sudo smbpasswd -a -s vagrant
+}
+
+clean_up_free_space() {
+  local tmp_path
+  tmp_path="$(mktemp)"
+  dd if=/dev/zero of="$tmp_path" bs=1024x1024 || echo -n
+  rm -v "$tmp_path"
 }
 
 main
