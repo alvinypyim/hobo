@@ -31,7 +31,6 @@ copy_src_files() {
   pushd /vagrant/src
   cp -v vimrc ~/.vimrc
   cp -v inputrc ~/.inputrc
-  cp -vR install stackup ~
   popd
 }
 
