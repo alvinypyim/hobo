@@ -14,10 +14,10 @@ main() {
   install_yarn
   install_phpbrew
   install_composer
+  install_global_ruby
   install_stackup
   install_global_python
-  install_awscli
-  install_ebcli
+  install_pip_packages
   install_samba
   clean_apt
   clean_up_free_space
@@ -60,7 +60,7 @@ clean_apt() {
 }
 
 install_docker_compose() {
-  sudo curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+  sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
   sudo chmod +x /usr/local/bin/docker-compose
 }
 
@@ -84,7 +84,21 @@ install_rbenv() {
   mkdir -vp ~/.rbenv/plugins
   git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
   popd
-  if . ~/.profile; then echo -n; fi
+  source_profile
+}
+
+source_profile() {
+  set +e
+  set +x
+  . ~/.profile
+  set -x
+  set -e
+}
+
+install_global_ruby() {
+  rbenv install 2.5.1
+  rbenv rehash
+  rbenv global 2.5.1
 }
 
 install_pyenv() {
@@ -92,7 +106,7 @@ install_pyenv() {
   echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.profile
   echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.profile
   echo '! command -v pyenv &> /dev/null || eval "$(pyenv init -)"' >> ~/.profile
-  if . ~/.profile; then echo -n; fi
+  source_profile
 }
 
 install_nvm() {
@@ -107,24 +121,15 @@ install_yarn() {
 }
 
 install_global_python() {
-  pyenv install 2.7.14
-  pyenv global 2.7.14
+  pyenv install 2.7.15
+  pyenv global 2.7.15
   pip install virtualenv
 }
 
-install_awscli() {
+install_pip_packages() {
   pip install awscli
-}
-
-install_ebcli() {
-  mkdir -v eb
-  pushd eb
-  virtualenv vendor/virtualenv
-  vendor/virtualenv/bin/pip install awsebcli
-  echo 'exec "$(dirname "$0")"/vendor/virtualenv/bin/eb "$@"' > call
-  chmod -v +x call
-  popd
-  echo 'export EDITOR="$(which vim)"' >> ~/.profile
+  pip install awsebcli
+  pip install awslogs
 }
 
 install_phpbrew() {
@@ -179,12 +184,7 @@ install_composer() {
 }
 
 install_stackup() {
-  rbenv install "$(cat ~/stackup/.ruby-version)"
-  rbenv rehash
-  pushd ~/stackup
-  gem install bundler -N
-  bundle --path vendor/bundle
-  popd
+  gem install stackup -N
 }
 
 install_samba() {
