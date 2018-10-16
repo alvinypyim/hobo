@@ -18,6 +18,7 @@ main() {
   install_stackup
   install_global_python
   install_pip_packages
+  install_saw
   install_samba
   clean_apt
   clean_up_free_space
@@ -60,7 +61,7 @@ clean_apt() {
 }
 
 install_docker_compose() {
-  sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+  sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
   sudo chmod +x /usr/local/bin/docker-compose
 }
 
@@ -110,7 +111,7 @@ install_pyenv() {
 }
 
 install_nvm() {
-  curl https://raw.githubusercontent.com/creationix/nvm/v0.33.4/install.sh | bash
+  curl https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 }
 
 install_yarn() {
@@ -129,7 +130,6 @@ install_global_python() {
 install_pip_packages() {
   pip install awscli
   pip install awsebcli
-  pip install awslogs
 }
 
 install_phpbrew() {
@@ -185,6 +185,14 @@ install_composer() {
 
 install_stackup() {
   gem install stackup -N
+}
+
+install_saw() {
+  local temp_file
+  temp_file="$(mktemp)"
+  curl -L "-o$temp_file" https://github.com/TylerBrock/saw/releases/download/v0.2.0/saw_0.2.0_linux_amd64.deb
+  sudo dpkg -i "$temp_file"
+  rm -v "$temp_file"
 }
 
 install_samba() {
