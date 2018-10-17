@@ -141,11 +141,11 @@ install_phpbrew() {
   sudo mv -v "$phpbrew_executable" /usr/local/bin/phpbrew
 
   sudo apt-get -y install \
-    php7.0 \
-    php7.0-curl \
-    php7.0-json \
-    php7.0-cgi \
-    php7.0-fpm \
+    php7.2 \
+    php7.2-curl \
+    php7.2-json \
+    php7.2-cgi \
+    php7.2-fpm \
     autoconf \
     automake \
     libxml2-dev \
