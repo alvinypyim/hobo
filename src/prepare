@@ -20,6 +20,8 @@ main() {
   install_pip_packages
   install_saw
   install_samba
+  install_gui_packages
+  install_chrome
   clean_apt
   clean_up_free_space
 }
@@ -199,6 +201,73 @@ install_samba() {
   sudo apt-get -y install samba
   sudo bash -c 'cat /vagrant/src/smb-section.conf >> /etc/samba/smb.conf'
   { echo vagrant && echo vagrant; } | sudo smbpasswd -a -s vagrant
+}
+
+install_chrome() {
+  local chrome
+  chrome="$(mktemp)"
+  curl -L "-o$chrome" https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  dpkg -i "$chrome"
+  rm -v "$chrome"
+  sudo apt-get -y -f install
+}
+
+install_gui_packages() {
+  sudo apt-get -y install \
+    firefox \
+    konsole \
+    gitk \
+    fonts-arphic-ukai \
+    fonts-arphic-uming \
+    fonts-dejavu-core \
+    fonts-freefont-ttf \
+    fonts-guru \
+    fonts-guru-extra \
+    fonts-kacst \
+    fonts-kacst-one \
+    fonts-khmeros-core \
+    fonts-lao \
+    fonts-liberation \
+    fonts-lklug-sinhala \
+    fonts-lohit-guru \
+    fonts-nanum \
+    fonts-noto-cjk \
+    fonts-opensymbol \
+    fonts-sil-abyssinica \
+    fonts-sil-padauk \
+    fonts-stix \
+    fonts-symbola \
+    fonts-takao-pgothic \
+    fonts-thai-tlwg \
+    fonts-tibetan-machine \
+    fonts-tlwg-garuda \
+    fonts-tlwg-garuda-ttf \
+    fonts-tlwg-kinnari \
+    fonts-tlwg-kinnari-ttf \
+    fonts-tlwg-laksaman \
+    fonts-tlwg-laksaman-ttf \
+    fonts-tlwg-loma \
+    fonts-tlwg-loma-ttf \
+    fonts-tlwg-mono \
+    fonts-tlwg-mono-ttf \
+    fonts-tlwg-norasi \
+    fonts-tlwg-norasi-ttf \
+    fonts-tlwg-purisa \
+    fonts-tlwg-purisa-ttf \
+    fonts-tlwg-sawasdee \
+    fonts-tlwg-sawasdee-ttf \
+    fonts-tlwg-typewriter \
+    fonts-tlwg-typewriter-ttf \
+    fonts-tlwg-typist \
+    fonts-tlwg-typist-ttf \
+    fonts-tlwg-typo \
+    fonts-tlwg-typo-ttf \
+    fonts-tlwg-umpush \
+    fonts-tlwg-umpush-ttf \
+    fonts-tlwg-waree \
+    fonts-tlwg-waree-ttf \
+    ttf-ancient-fonts-symbola \
+    ttf-ubuntu-font-family
 }
 
 clean_up_free_space() {
