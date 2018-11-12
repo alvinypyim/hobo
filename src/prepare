@@ -34,6 +34,7 @@ copy_src_files() {
   pushd /vagrant/src
   cp -v vimrc ~/.vimrc
   cp -v inputrc ~/.inputrc
+  cp -v screenrc ~/.screenrc
   cp -vR install ~
   popd
 }
@@ -216,6 +217,7 @@ install_gui_packages() {
   sudo apt-get -y install \
     firefox \
     konsole \
+    dbus-x11 \
     gitk \
     fonts-arphic-ukai \
     fonts-arphic-uming \
