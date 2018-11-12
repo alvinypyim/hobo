@@ -63,7 +63,7 @@ clean_apt() {
 }
 
 install_docker_compose() {
-  sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+  sudo curl -L https://github.com/docker/compose/releases/download/1.23.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
   sudo chmod +x /usr/local/bin/docker-compose
 }
 
@@ -99,9 +99,9 @@ source_profile() {
 }
 
 install_global_ruby() {
-  rbenv install 2.5.1
+  rbenv install 2.5.3
   rbenv rehash
-  rbenv global 2.5.1
+  rbenv global 2.5.3
 }
 
 install_pyenv() {
@@ -192,7 +192,7 @@ install_stackup() {
 install_saw() {
   local temp_file
   temp_file="$(mktemp)"
-  curl -L "-o$temp_file" https://github.com/TylerBrock/saw/releases/download/v0.2.0/saw_0.2.0_linux_amd64.deb
+  curl -L "-o$temp_file" https://github.com/TylerBrock/saw/releases/download/v1.2.1/saw_1.2.1_linux_amd64.deb
   sudo dpkg -i "$temp_file"
   rm -v "$temp_file"
 }
@@ -207,7 +207,7 @@ install_chrome() {
   local chrome
   chrome="$(mktemp)"
   curl -L "-o$chrome" https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  dpkg -i "$chrome"
+  sudo dpkg -i "$chrome"
   rm -v "$chrome"
   sudo apt-get -y -f install
 }
