@@ -55,7 +55,9 @@ install_apt_packages() {
     bc \
     openjdk-8-jdk \
     nfs-common \
-    unzip
+    unzip \
+    mysql-client \
+    pv
 }
 
 clean_apt() {
