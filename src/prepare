@@ -195,7 +195,7 @@ install_stackup() {
 install_saw() {
   local temp_file
   temp_file="$(mktemp)"
-  curl -L "-o$temp_file" https://github.com/TylerBrock/saw/releases/download/v1.2.1/saw_1.2.1_linux_amd64.deb
+  curl -L "-o$temp_file" https://github.com/TylerBrock/saw/releases/download/v0.2.2/saw_0.2.2_linux_amd64.deb
   sudo dpkg -i "$temp_file"
   rm -v "$temp_file"
 }
