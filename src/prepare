@@ -217,6 +217,9 @@ install_chrome() {
 
 install_gui_packages() {
   sudo apt-get -y install \
+    xvfb \
+    x11vnc \
+    fluxbox \
     firefox \
     konsole \
     dbus-x11 \
