@@ -216,6 +216,8 @@ install_chrome() {
 }
 
 install_gui_packages() {
+  echo 'export GDK_DPI_SCALE=1.25' >> ~/.profile
+  echo 'export QT_FONT_DPI=120' >> ~/.profile
   sudo apt-get -y install \
     xvfb \
     x11vnc \
