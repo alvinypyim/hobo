@@ -42,7 +42,7 @@ install_virtualbox() {
 install_vmware_vdiskmanager() {
   local archive_path archive_file_path file_name=1023856-vmware-vdiskmanager-linux.7.0.1
   archive_file_path="$(mktemp)"
-  curl -L "-o$archive_file_path" 'https://kb.vmware.com/servlet/fileField?entityId=ka134000000Rl9lAAC&field=Attachment_2__Body__s'
+  curl -L "-o$archive_file_path" https://kb.vmware.com/sfc/servlet.shepherd/version/download/068f4000009EgK0AAK
   archive_path="$(mktemp -d)"
   pushd "$archive_path"
   unzip "$archive_file_path"
