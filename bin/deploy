@@ -57,7 +57,7 @@ install_vagrant() {
   local vagrant_deb
 
   vagrant_deb="$(mktemp)"
-  curl -L "-o$vagrant_deb" https://releases.hashicorp.com/vagrant/2.0.1/vagrant_2.0.1_x86_64.deb
+  curl -L "-o$vagrant_deb" https://releases.hashicorp.com/vagrant/2.2.5/vagrant_2.2.5_x86_64.deb
   sudo dpkg -i "$vagrant_deb"
   rm -v "$vagrant_deb"
   sudo apt-get -y -f install
