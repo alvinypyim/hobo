@@ -81,7 +81,7 @@ install_rbenv() {
     zlib1g-dev \
     libncurses5-dev \
     libffi-dev \
-    libgdbm3 \
+    libgdbm5 \
     libgdbm-dev
   pushd ~
   git clone https://github.com/rbenv/rbenv.git ~/.rbenv
