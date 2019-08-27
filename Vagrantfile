@@ -5,7 +5,7 @@ Vagrant.configure '2' do |config|
   end
   config.disksize.size = '100GB' unless ENV['RESIZE'].to_s.empty?
   config.vm.provision :docker 
-  config.vm.box = 'ubuntu/xenial64'
+  config.vm.box = 'ubuntu/bionic64'
   config.vm.provision(
     'shell',
     path: 'src/prepare',
