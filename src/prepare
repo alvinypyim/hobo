@@ -12,8 +12,6 @@ main() {
   install_pyenv
   install_nvm
   install_yarn
-  install_phpbrew
-  install_composer
   install_global_ruby
   install_stackup
   install_global_python
@@ -22,6 +20,7 @@ main() {
   install_samba
   install_gui_packages
   install_chrome
+  configure_vim
   clean_apt
   clean_up_free_space
 }
@@ -66,7 +65,7 @@ clean_apt() {
 }
 
 install_docker_compose() {
-  sudo curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+  sudo curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
   sudo chmod +x /usr/local/bin/docker-compose
 }
 
@@ -102,9 +101,9 @@ source_profile() {
 }
 
 install_global_ruby() {
-  rbenv install 2.5.3
+  rbenv install 2.6.3
   rbenv rehash
-  rbenv global 2.5.3
+  rbenv global 2.6.3
 }
 
 install_pyenv() {
@@ -137,57 +136,6 @@ install_pip_packages() {
   pip install awsebcli
 }
 
-install_phpbrew() {
-  local phpbrew_executable
-
-  phpbrew_executable="$(mktemp)"
-  curl -L "-o$phpbrew_executable" https://github.com/phpbrew/phpbrew/raw/master/phpbrew
-  chmod -v +x "$phpbrew_executable"
-  sudo mv -v "$phpbrew_executable" /usr/local/bin/phpbrew
-
-  sudo apt-get -y install \
-    php7.0 \
-    php7.0-curl \
-    php7.0-json \
-    php7.0-cgi \
-    php7.0-fpm \
-    autoconf \
-    automake \
-    libxml2-dev \
-    libcurl4-openssl-dev \
-    libssl-dev \
-    openssl \
-    gettext \
-    libicu-dev \
-    libmcrypt-dev \
-    libmcrypt4 \
-    libbz2-dev \
-    libreadline-dev \
-    build-essential \
-    libmhash-dev \
-    libmhash2 \
-    libxslt1-dev \
-    libmagickwand-dev \
-    libmagickcore-dev \
-    libmysqlclient-dev \
-    libmysqld-dev
-
-  phpbrew init
-  echo 'export PHPBREW_RC_ENABLE=1' >> ~/.bashrc
-  echo '[ ! -e ~/.phpbrew/bashrc ] || . ~/.phpbrew/bashrc' >> ~/.bashrc
-}
-
-install_composer() {
-  local temp_path
-
-  temp_path="$(mktemp -d)"
-  pushd "$temp_path"
-  /vagrant/vendor/download-composer
-  sudo mv -v composer.phar /usr/local/bin/composer
-  popd
-  rm -vRf "$temp_path"
-}
-
 install_stackup() {
   gem install stackup -N
 }
@@ -215,6 +163,19 @@ install_chrome() {
   sudo apt-get -y -f install
 }
 
+configure_vim() {
+  mkdir -vp ~/.vim/syntax
+  pushd ~/.vim/syntax
+  curl -LO https://raw.githubusercontent.com/kchmck/vim-coffee-script/9e3b4de2a476caeb6ff21b5da20966d7c67a98bb/syntax/coffee.vim
+  curl -LO https://raw.githubusercontent.com/leafgarland/typescript-vim/5a319ea5504e18215d155576c78d1b7fb8e22c8f/syntax/typescript.vim
+  popd
+  mkdir -vp ~/.vim/ftdetect
+  pushd ~/.vim/ftdetect
+  curl -LO https://raw.githubusercontent.com/kchmck/vim-coffee-script/9e3b4de2a476caeb6ff21b5da20966d7c67a98bb/ftdetect/coffee.vim
+  curl -LO https://raw.githubusercontent.com/leafgarland/typescript-vim/5a319ea5504e18215d155576c78d1b7fb8e22c8f/ftdetect/typescript.vim
+  popd
+}
+
 install_gui_packages() {
   echo 'export GDK_DPI_SCALE=1.25' >> ~/.profile
   echo 'export QT_FONT_DPI=120' >> ~/.profile
@@ -228,25 +189,73 @@ install_gui_packages() {
     gitk \
     fonts-arphic-ukai \
     fonts-arphic-uming \
+    fonts-beng \
+    fonts-beng-extra \
     fonts-dejavu-core \
+    fonts-deva \
+    fonts-deva-extra \
+    fonts-droid-fallback \
     fonts-freefont-ttf \
+    fonts-gargi \
+    fonts-gubbi \
+    fonts-gujr \
+    fonts-gujr-extra \
     fonts-guru \
     fonts-guru-extra \
+    fonts-indic \
     fonts-kacst \
     fonts-kacst-one \
+    fonts-kalapi \
     fonts-khmeros-core \
+    fonts-knda \
     fonts-lao \
     fonts-liberation \
+    fonts-liberation2 \
     fonts-lklug-sinhala \
+    fonts-lohit-beng-assamese \
+    fonts-lohit-beng-bengali \
+    fonts-lohit-deva \
+    fonts-lohit-gujr \
     fonts-lohit-guru \
-    fonts-nanum \
+    fonts-lohit-knda \
+    fonts-lohit-mlym \
+    fonts-lohit-orya \
+    fonts-lohit-taml \
+    fonts-lohit-taml-classical \
+    fonts-lohit-telu \
+    fonts-mlym \
+    fonts-nakula \
+    fonts-navilu \
     fonts-noto-cjk \
+    fonts-noto-color-emoji \
+    fonts-noto-mono \
     fonts-opensymbol \
+    fonts-orya \
+    fonts-orya-extra \
+    fonts-pagul \
+    fonts-sahadeva \
+    fonts-samyak-deva \
+    fonts-samyak-gujr \
+    fonts-samyak-mlym \
+    fonts-samyak-taml \
+    fonts-sarai \
     fonts-sil-abyssinica \
     fonts-sil-padauk \
-    fonts-stix \
-    fonts-symbola \
-    fonts-takao-pgothic \
+    fonts-smc \
+    fonts-smc-anjalioldlipi \
+    fonts-smc-chilanka \
+    fonts-smc-dyuthi \
+    fonts-smc-karumbi \
+    fonts-smc-keraleeyam \
+    fonts-smc-manjari \
+    fonts-smc-meera \
+    fonts-smc-rachana \
+    fonts-smc-raghumalayalamsans \
+    fonts-smc-suruma \
+    fonts-smc-uroob \
+    fonts-taml \
+    fonts-telu \
+    fonts-telu-extra \
     fonts-thai-tlwg \
     fonts-tibetan-machine \
     fonts-tlwg-garuda \
@@ -275,8 +284,7 @@ install_gui_packages() {
     fonts-tlwg-umpush-ttf \
     fonts-tlwg-waree \
     fonts-tlwg-waree-ttf \
-    ttf-ancient-fonts-symbola \
-    ttf-ubuntu-font-family
+    fonts-ubuntu
 }
 
 clean_up_free_space() {
