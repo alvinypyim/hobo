@@ -7,20 +7,20 @@ main() {
   copy_src_files
   configure_git
   install_apt_packages
-  install_docker_compose
-  install_rbenv
-  install_pyenv
-  install_nvm
-  install_yarn
-  install_global_ruby
-  install_stackup
-  install_global_python
-  install_pip_packages
-  install_saw
-  install_samba
-  install_gui_packages
-  install_chrome
-  configure_vim
+  #install_docker_compose
+  #install_rbenv
+  #install_pyenv
+  #install_nvm
+  #install_yarn
+  #install_global_ruby
+  #install_stackup
+  #install_global_python
+  #install_pip_packages
+  #install_saw
+  #install_samba
+  #install_gui_packages
+  #install_chrome
+  #configure_vim
   clean_apt
   clean_up_free_space
 }
