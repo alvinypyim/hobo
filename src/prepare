@@ -21,6 +21,7 @@ main() {
   install_gui_packages
   install_chrome
   configure_vim
+  configure_sysctl
   clean_apt
   clean_up_free_space
 }
@@ -174,6 +175,10 @@ configure_vim() {
   curl -LO https://raw.githubusercontent.com/kchmck/vim-coffee-script/9e3b4de2a476caeb6ff21b5da20966d7c67a98bb/ftdetect/coffee.vim
   curl -LO https://raw.githubusercontent.com/leafgarland/typescript-vim/5a319ea5504e18215d155576c78d1b7fb8e22c8f/ftdetect/typescript.vim
   popd
+}
+
+configure_sysctl() {
+  sudo bash -c 'echo fs.inotify.max_user_watches=524288 >> /etc/sysctl.conf'
 }
 
 install_gui_packages() {
