@@ -14,7 +14,7 @@ main() {
   install_virtualbox
   install_vmware_vdiskmanager
   install_vagrant
-  install_vagrant_plugins
+#  install_vagrant_plugins
   build_box
   push_box
 }
