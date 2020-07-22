@@ -73,7 +73,7 @@ build_box() {
   find '/home/runner/VirtualBox VMs' -name '*.vmdk' \
     -exec vmware-vdiskmanager -d {} ';' \
     -exec vmware-vdiskmanager -k {} ';'
-  RESIZE=1 vagrant up
+  RESIZE=1 vagrant up --debug
   vagrant halt
   vagrant package --base "$(vm_name)"
 }
