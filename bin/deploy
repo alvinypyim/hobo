@@ -68,7 +68,8 @@ install_vagrant_plugins() {
 }
 
 build_box() {
-  BOX_VERSION="$(git_tag)" vagrant up --debug
+  BOX_VERSION="$(git_tag)" vagrant up || vagrant global-status
+  exit 1
   vagrant halt
   find '/home/runner/VirtualBox VMs' -name '*.vmdk' \
     -exec vmware-vdiskmanager -d {} ';' \
