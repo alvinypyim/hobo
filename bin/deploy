@@ -14,7 +14,6 @@ main() {
   install_virtualbox
   install_vmware_vdiskmanager
   install_vagrant
-  install_vagrant_plugins
   build_box
   push_box
 }
@@ -61,10 +60,6 @@ install_vagrant() {
   sudo dpkg -i "$vagrant_deb"
   rm -v "$vagrant_deb"
   sudo apt-get -y -f install
-}
-
-install_vagrant_plugins() {
-  vagrant plugin install vagrant-disksize
 }
 
 build_box() {
