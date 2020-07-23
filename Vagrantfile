@@ -7,13 +7,13 @@ Vagrant.configure '2' do |config|
   end
   config.vm.provision :docker 
   config.vm.box = 'hashicorp/bionic64'
-  # config.vm.provision(
-  #   'shell',
-  #   path: 'src/prepare',
-  #   privileged: false,
-  #   env: {
-  #     'BOX_VERSION' => ENV['BOX_VERSION']
-  #   }
-  # )
+  config.vm.provision(
+    'shell',
+    path: 'src/prepare',
+    privileged: false,
+    env: {
+      'BOX_VERSION' => ENV['BOX_VERSION']
+    }
+  )
   config.ssh.insert_key = false
 end
