@@ -14,7 +14,7 @@ main() {
   install_virtualbox
   install_vmware_vdiskmanager
   install_vagrant
-  #install_vagrant_plugins
+  install_vagrant_plugins
   build_box
   push_box
 }
@@ -78,7 +78,7 @@ build_box() {
   find '/home/runner/VirtualBox VMs' -name '*.vmdk' \
     -exec vmware-vdiskmanager -d {} ';' \
     -exec vmware-vdiskmanager -k {} ';'
-  #RESIZE=1 vagrant up
+  RESIZE=1 vagrant up
   vagrant halt
   vagrant package --base "$(vm_name)"
 }
