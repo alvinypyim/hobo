@@ -69,7 +69,7 @@ install_vagrant_plugins() {
 
 build_box() {
   sudo apt-get -y install axel
-  while ! axel -a -oa -n10 "$(curl -sIL https://vagrantcloud.com/hashicorp/boxes/bionic64/versions/1.0.282/providers/virtualbox.box | grep '\.s3\.' | sed 's/^Location: //' | sed 's/\r//')"; do echo -n; done
+  while ! timeout 60 axel -a -oa -n10 "$(curl -sIL https://vagrantcloud.com/hashicorp/boxes/bionic64/versions/1.0.282/providers/virtualbox.box | grep '\.s3\.' | sed 's/^Location: //' | sed 's/\r//')"; do echo -n; done
   vagrant box add --name hashicorp/bionic64 a
   rm -v a
   BOX_VERSION="$(git_tag)" vagrant up || vagrant global-status
