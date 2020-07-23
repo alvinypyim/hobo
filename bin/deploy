@@ -14,7 +14,7 @@ main() {
   install_virtualbox
   install_vmware_vdiskmanager
   install_vagrant
-  install_vagrant_plugins
+  #install_vagrant_plugins
   build_box
   push_box
 }
@@ -72,12 +72,13 @@ build_box() {
   axel -oa -n10 "$(curl -sIL https://vagrantcloud.com/hashicorp/boxes/bionic64/versions/1.0.282/providers/virtualbox.box | grep '\.s3\.' | sed 's/^Location: //' | sed 's/\r//')"
   vagrant box add --name hashicorp/bionic64 a
   rm -v a
-  BOX_VERSION="$(git_tag)" vagrant up
+  BOX_VERSION="$(git_tag)" vagrant up || vagrant global-status
+  exit 1
   vagrant halt
   find '/home/runner/VirtualBox VMs' -name '*.vmdk' \
     -exec vmware-vdiskmanager -d {} ';' \
     -exec vmware-vdiskmanager -k {} ';'
-  RESIZE=1 vagrant up
+  #RESIZE=1 vagrant up
   vagrant halt
   vagrant package --base "$(vm_name)"
 }
