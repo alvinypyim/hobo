@@ -16,6 +16,7 @@ main() {
   install_stackup
   install_global_python
   install_pip_packages
+  install_aws_cli
   install_saw
   install_samba
   install_gui_packages
@@ -67,7 +68,7 @@ clean_apt() {
 }
 
 install_docker_compose() {
-  sudo curl -L https://github.com/docker/compose/releases/download/1.24.1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+  sudo curl -L https://github.com/docker/compose/releases/download/1.27.4/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
   sudo chmod +x /usr/local/bin/docker-compose
 }
 
@@ -128,14 +129,22 @@ install_yarn() {
 }
 
 install_global_python() {
-  pyenv install 2.7.15
-  pyenv global 2.7.15
-  pip install virtualenv
+  sudo apt-get -y install libsqlite3-dev
+  pyenv install 3.9.0
+  pyenv global 3.9.0
 }
 
 install_pip_packages() {
-  pip install awscli
-  pip install awsebcli
+  pip install pipenv
+}
+
+install_aws_cli() {
+  local awsclizip
+  awsclizip=awscliv2.zip
+  curl "-o$awsclizip" curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+  unzip "$awsclizip"
+  sudo ./aws/install
+  rm -v "$awsclizip"
 }
 
 install_stackup() {
