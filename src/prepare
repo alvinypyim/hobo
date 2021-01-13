@@ -141,7 +141,7 @@ install_pip_packages() {
 install_aws_cli() {
   local awsclizip
   awsclizip=awscliv2.zip
-  curl "-o$awsclizip" curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+  curl "-o$awsclizip" https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
   unzip "$awsclizip"
   sudo ./aws/install
   rm -v "$awsclizip"
